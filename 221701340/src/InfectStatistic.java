@@ -21,7 +21,7 @@ class Date{
 			month = Integer.parseInt(date[1]);
 			day = Integer.parseInt(date[2]);
 		}catch(NumberFormatException e) {
-			System.out.println(e);
+			e.printStackTrace();
 		}
 	}
 	Date(){
@@ -192,7 +192,7 @@ class Command {
 }
 
 class FileIO{
-	public static final String[] PROVINCE = {"安徽","澳门","北京","重庆","福建","甘肃","广东","广西壮族"
+	public static final String[] PROVINCE = {"全国","安徽","澳门","北京","重庆","福建","甘肃","广东","广西壮族"
 			,"贵州","海南","河北","河南","黑龙江","湖北","湖南","江西","吉林","江苏","辽宁","内蒙古","宁夏回族","青海","山西","山东","陕西","上海","四川","天津","台湾","西藏"
 			,"新疆","香港","云南","浙江"};
 	private Command command;
@@ -221,7 +221,6 @@ class FileIO{
 		for(File file : files) {
 			if(file.isFile() && file.exists()) {
 				String fileDateStr = file.getName().substring(0, 10);
-				System.out.println(fileDateStr);
 				Date fileDate =new Date(fileDateStr);
 				if(fileDate.earlier(command.getDate())) {
 					//System.out.println("判断日期成功！");
@@ -267,7 +266,6 @@ class FileIO{
 					patientCure(lineData , proNum);
 				}
 				if(text.indexOf("确诊感染") != -1) {
-					System.out.println("确认");//////////////
 					confirmIfection(lineData , proNum);
 				}
 				if(text.indexOf("排除") != -1) {
@@ -275,6 +273,7 @@ class FileIO{
 				}
 			}
 			nationCount();
+			read.close();
 		}catch(UnsupportedEncodingException e){
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
@@ -332,28 +331,59 @@ class FileIO{
 		num[proNum][0] += icrement;
 		num[proNum][1] -= icrement;
 	}
-	//处理排除感染者的数据
+	//处理排除感染的数据
 	private void excludeIfection(String[] lineData ,int proNum ) {
 		int icrement = Integer.parseInt(lineData[3].substring(0,lineData[3].indexOf("人") ));
 		num[proNum][1] -= icrement;
 	}
 	//计算全国的数据
 	private void nationCount() {
-		for(int i = 0;i < 34 ; i ++ ) {
+		//清空全国的数据
+		for(int i = 0;i < 4;i ++) {
+			num[0][i] = 0;
+		}
+		for(int i = 1;i < 35 ; i ++ ) {
 			for(int j = 0;j< 4;j ++) {
-				num[34][j] += num[i][j];
+				num[0][j] += num[i][j];
 			}
 		}
 	}
 	//输出文件
 	public void fileOut() {
-		for(int i = 0;i < 35 ; i ++ ) {
-			for(int j = 0;j< 4;j ++) {
-				System.out.print(num[i][j] + "  ");
+		try {
+			File file = new File(command.getOutFile());
+			if(!file.exists()) {
+				file.createNewFile();
 			}
-			System.out.print("\n");
-		}
-			
+			FileWriter fileWriter = new FileWriter(file);
+			BufferedWriter bufferWriter = new BufferedWriter(fileWriter);
+			for(int i = 0;i < 35;i ++) {
+				if(num[i][0] == 0 && num[i][1] == 0) {
+					continue;
+				}
+				if(command.getProvince().length != 0) {
+					for(int k = 0;k < command.getProvince().length;k ++) {
+						if(PROVINCE[i].equals(command.getProvince()[k])) {
+							bufferWriter.write(PROVINCE[i] + " " +"感染患者" + num[i][0] + "人"
+									+ " " + "疑似患者" + num[i][1] + "人" + " " + "治愈" + num[i][2] + "人"
+									+ " " + "死亡" + num[i][3] + "人" + "\n");
+							System.out.println(PROVINCE[i] + " " +"感染患者" + num[i][0] + "人"
+									+ " " + "疑似患者" + num[i][1] + "人" + " " + "治愈" + num[i][2] + "人"
+									+ " " + "死亡" + num[i][3] + "人" + "\n");
+						}
+					}
+				}else {
+					bufferWriter.write(PROVINCE[i] + " " +"感染患者" + num[i][0] + "人"
+							+ " " + "疑似患者" + num[i][1] + "人" + " " + "治愈" + num[i][2] + "人"
+							+ " " + "死亡" + num[i][3] + "人");
+				}
+			}
+			bufferWriter.write("// 该文档并非真实数据，仅供测试使用");
+			bufferWriter.close();
+		}catch(IOException e){
+		      e.printStackTrace();
+	     }
+		
 	}
 }
 public class InfectStatistic {
@@ -364,6 +394,5 @@ public class InfectStatistic {
 		fileIO.fileIn();
 		fileIO.fileOut();
 		System.out.println("程序结束！");
-        System.out.println("helloworld");
     }
 }
