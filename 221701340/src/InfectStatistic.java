@@ -192,7 +192,7 @@ class Command {
 }
 
 class FileIO{
-	public static final String[] PROVINCE = {"安徽","澳门","北京","重庆","福建","甘肃","广东","广西壮族"
+	public static final String[] PROVINCE = {"全国","安徽","澳门","北京","重庆","福建","甘肃","广东","广西壮族"
 			,"贵州","海南","河北","河南","黑龙江","湖北","湖南","江西","吉林","江苏","辽宁","内蒙古","宁夏回族","青海","山西","山东","陕西","上海","四川","天津","台湾","西藏"
 			,"新疆","香港","云南","浙江"};
 	private Command command;
@@ -339,21 +339,27 @@ class FileIO{
 	}
 	//计算全国的数据
 	private void nationCount() {
-		for(int i = 0;i < 34 ; i ++ ) {
+		//清空全国的数据
+		for(int i = 0;i < 4;i ++) {
+			num[0][i] = 0;
+		}
+		for(int i = 1;i < 35 ; i ++ ) {
 			for(int j = 0;j< 4;j ++) {
-				num[34][j] += num[i][j];
+				num[0][j] += num[i][j];
 			}
 		}
 	}
 	//输出文件
 	public void fileOut() {
-		for(int i = 0;i < 35 ; i ++ ) {
-			for(int j = 0;j< 4;j ++) {
-				System.out.print(num[i][j] + "  ");
+		for(int i = 0;i < 35;i ++) {
+			if(num[i][0] == 0 && num[i][1] == 0) {
+				continue;
 			}
-			System.out.print("\n");
+			System.out.println(PROVINCE[i] + " " +"感染患者" + num[i][0] + "人"
+				+ " " + "疑似患者" + num[i][1] + "人" + " " + "治愈" + num[i][2] + "人"
+				+ " " + "死亡" + num[i][3] + "人");
 		}
-			
+		System.out.println("// 该文档并非真实数据，仅供测试使用");
 	}
 }
 public class InfectStatistic {
@@ -364,6 +370,5 @@ public class InfectStatistic {
 		fileIO.fileIn();
 		fileIO.fileOut();
 		System.out.println("程序结束！");
-        System.out.println("helloworld");
     }
 }
