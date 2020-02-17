@@ -1,4 +1,3 @@
-package infectSta;
 
 import java.io.*;
 
@@ -6,9 +5,9 @@ import java.io.*;
  * InfectStatistic
  * TODO
  *
- * @author xxx
- * @version xxx
- * @since xxx
+ * @author 胡海江
+ * @version 1.0
+ * @since 2020-02-17
  */
 class Date{
 	private int year;
@@ -200,10 +199,6 @@ class FileIO{
 	
 	FileIO(Command command){
 		this.command = command;
-		/*int m = command.getProvince().length+1;
-		if(command.getProvince().length == 0) {
-			m = 35;//34个省和全国
-		}*/
 		int m = 35;//34个省和全国
 		int n = 4;//4种人数
 		num = new int[m][n] ;
@@ -361,7 +356,7 @@ class FileIO{
 				if(num[i][0] == 0 && num[i][1] == 0) {
 					continue;
 				}
-				if(command.getProvince().length != 0) {
+				if(command.getProvince() != null) {
 					for(int k = 0;k < command.getProvince().length;k ++) {
 						if(PROVINCE[i].equals(command.getProvince()[k])) {
 							bufferWriter.write(PROVINCE[i] + " " +"感染患者" + num[i][0] + "人"
