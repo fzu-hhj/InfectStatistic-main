@@ -246,7 +246,6 @@ class FileIO{
 				if(lineData[0].equals("//")) {
 					break;
 				}
-				System.out.println(lineData[0]);
 				int proNum = 0;
 				//匹配省名
 				for(int i = 0;i < 35;i ++) {
@@ -267,13 +266,15 @@ class FileIO{
 				if(text.indexOf("治愈") != -1) {
 					patientCure(lineData , proNum);
 				}
-				if(text.indexOf("确认感染") != -1) {
+				if(text.indexOf("确诊感染") != -1) {
+					System.out.println("确认");//////////////
 					confirmIfection(lineData , proNum);
 				}
 				if(text.indexOf("排除") != -1) {
 					excludeIfection(lineData , proNum);
 				}
 			}
+			nationCount();
 		}catch(UnsupportedEncodingException e){
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
@@ -297,7 +298,7 @@ class FileIO{
 	private void patientFlow(String[] lineData ,int proNumOut ) {
 		int proNumIn = 0;
 		for(int i = 0;i < 35;i ++) {
-			if(PROVINCE[i].equals(lineData[0])) {
+			if(PROVINCE[i].equals(lineData[3])) {
 				proNumIn = i ;
 				break;
 			}		
@@ -307,19 +308,20 @@ class FileIO{
 			num[proNumOut][0] -= icrement;
 			num[proNumIn][0] += icrement;
 		}
-		if(lineData[1].equals("感染患者")) {
+		if(lineData[1].equals("疑似患者")) {
 			int icrement = Integer.parseInt(lineData[4].substring(0,lineData[4].indexOf("人") ));
 			num[proNumOut][1] -= icrement;
 			num[proNumIn][1] += icrement;
 		}
 	}
+	//处理治愈的人
+		private void patientCure(String[] lineData ,int proNum ) {
+			int icrement = Integer.parseInt(lineData[2].substring(0,lineData[2].indexOf("人") ));
+			num[proNum][0] -= icrement;
+			num[proNum][2] += icrement;
+		}
 	//处理死亡的人
 	private void patientDie(String[] lineData ,int proNum ) {
-		int icrement = Integer.parseInt(lineData[2].substring(0,lineData[2].indexOf("人") ));
-		num[proNum][0] -= icrement;
-		num[proNum][2] += icrement;
-	}//处理治愈的人
-	private void patientCure(String[] lineData ,int proNum ) {
 		int icrement = Integer.parseInt(lineData[2].substring(0,lineData[2].indexOf("人") ));
 		num[proNum][0] -= icrement;
 		num[proNum][3] += icrement;
@@ -330,18 +332,28 @@ class FileIO{
 		num[proNum][0] += icrement;
 		num[proNum][1] -= icrement;
 	}
+	//处理排除感染的数据
 	private void excludeIfection(String[] lineData ,int proNum ) {
 		int icrement = Integer.parseInt(lineData[3].substring(0,lineData[3].indexOf("人") ));
 		num[proNum][1] -= icrement;
 	}
-	private void pp7(String lineData) {
-	
+	//计算全国的数据
+	private void nationCount() {
+		for(int i = 0;i < 34 ; i ++ ) {
+			for(int j = 0;j< 4;j ++) {
+				num[34][j] += num[i][j];
+			}
+		}
 	}
-	private void pp8(String lineData) {
-		
-	}
+	//输出文件
 	public void fileOut() {
-		
+		for(int i = 0;i < 35 ; i ++ ) {
+			for(int j = 0;j< 4;j ++) {
+				System.out.print(num[i][j] + "  ");
+			}
+			System.out.print("\n");
+		}
+			
 	}
 }
 public class InfectStatistic {
@@ -350,7 +362,7 @@ public class InfectStatistic {
     	Command command = new Command(args);
 		FileIO fileIO = new FileIO(command);
 		fileIO.fileIn();
-		//fileIO.fileOut();
+		fileIO.fileOut();
 		System.out.println("程序结束！");
         System.out.println("helloworld");
     }
