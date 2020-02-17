@@ -1,6 +1,6 @@
 package infectSta;
 
-import java.io.File;
+import java.io.*;
 
 /**
  * InfectStatistic
@@ -17,7 +17,6 @@ class Date{
 	Date(String dateStr){
 		String date[] = dateStr.split("-");
 		try {
-			System.out.println("02");///////////////////////*
 			year = Integer.parseInt(date[0]);
 			month = Integer.parseInt(date[1]);
 			day = Integer.parseInt(date[2]);
@@ -60,7 +59,7 @@ class Command {
 	private boolean sp = true;
 	private boolean cure = true;
 	private boolean dead = true;
-	private String[] province = {"全国","福建","湖北"};
+	private String[] province ;
 	private String logFile;
 	private String outFile;
 	
@@ -193,16 +192,29 @@ class Command {
 }
 
 class FileIO{
+	public static final String[] PROVINCE = {"安徽","澳门","北京","重庆","福建","甘肃","广东","广西壮族"
+			,"贵州","海南","河北","河南","黑龙江","湖北","湖南","江西","吉林","江苏","辽宁","内蒙古","宁夏回族","青海","山西","山东","陕西","上海","四川","天津","台湾","西藏"
+			,"新疆","香港","云南","浙江"};
 	private Command command;
 	private int[][] num;//存储指定省的人数
+	
 	FileIO(Command command){
 		this.command = command;
-		int m = command.getProvince().length;
-		int n = command.getKinds();
+		/*int m = command.getProvince().length+1;
+		if(command.getProvince().length == 0) {
+			m = 35;//34个省和全国
+		}*/
+		int m = 35;//34个省和全国
+		int n = 4;//4种人数
 		num = new int[m][n] ;
+		//初始化人数
+		for(int i = 0;i < m ;i ++) {
+			for(int j = 0;j < n;j ++) {
+				num[i][j] = 0;
+			}
+		}
 	}
 	public void fileIn() {
-		System.out.println("01");
 		String encoding = "UTF-8";
 		String dir = command.getLogFile();
 		File[] files = new File(dir).listFiles();
@@ -213,11 +225,89 @@ class FileIO{
 				Date fileDate =new Date(fileDateStr);
 				if(fileDate.earlier(command.getDate())) {
 					//System.out.println("判断日期成功！");
-					
+					parseData(file , encoding);
 				}
 				//System.out.println("读入文件成功！");
 			}
 		}
+		
+	}
+
+	//对每一个文件的数据进行读取
+	private void parseData(File file , String encoding) {
+		InputStreamReader read = null;
+		try {
+			read =new InputStreamReader(new FileInputStream(file), encoding);
+			BufferedReader br = new BufferedReader(read);
+			String text = null;
+			//按行读取文件
+			while((text = br.readLine()) != null) {
+				if(text.indexOf("新增") != -1) {
+					pp1(text);
+				}
+				if(text.indexOf("流入") !=-1){
+					pp2(text);
+				}
+				if(text.indexOf("死亡") != -1) {
+					pp3(text);
+				}
+				if(text.indexOf("治愈") != -1) {
+					pp4(text);
+				}
+				if(text.indexOf("确认感染") != -1) {
+					pp5(text);
+				}
+				if(text.indexOf("排除") != -1) {
+					pp6(text);
+				}
+			}
+		}catch(UnsupportedEncodingException e){
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+	}
+	//处理新增感染患者和疑似患者
+	private void pp1(String lineText) {
+		String[] lineData = lineText.split("\\s+");
+		int proNum = 0;
+		//匹配省名
+		for(int i = 0;i < 35;i ++) {
+			if(PROVINCE[i].equals(lineData[0])) {
+				proNum = i ;
+				break;
+			}		
+		}
+		if(lineData[2].equals("感染患者")) {
+			int icrement = Integer.parseInt(lineData[3].substring(0,lineData[3].indexOf("人") ));
+			num[proNum][0] += icrement;
+		}
+		else if(lineData[2].equals("疑似患者")) {
+			int icrement = Integer.parseInt(lineData[3].substring(0,lineData[3].indexOf("人") ));
+			num[proNum][1] += icrement;
+		}
+	}
+	private void pp2(String lineText) {
+		
+	}
+	private void pp3(String lineText) {
+	
+	}
+	private void pp4(String lineText) {
+	
+	}
+	private void pp5(String lineText) {
+		
+	}
+	private void pp6(String lineText) {
+		
+	}
+	private void pp7(String lineData) {
+	
+	}
+	private void pp8(String lineData) {
 		
 	}
 	public void fileOut() {
@@ -225,7 +315,6 @@ class FileIO{
 	}
 }
 public class InfectStatistic {
-	
 
     public static void main(String[] args) {
     	Command command = new Command(args);
