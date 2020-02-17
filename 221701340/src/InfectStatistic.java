@@ -332,7 +332,7 @@ class FileIO{
 		num[proNum][0] += icrement;
 		num[proNum][1] -= icrement;
 	}
-	//处理排除感染的数据
+	//处理排除感染者的数据
 	private void excludeIfection(String[] lineData ,int proNum ) {
 		int icrement = Integer.parseInt(lineData[3].substring(0,lineData[3].indexOf("人") ));
 		num[proNum][1] -= icrement;
