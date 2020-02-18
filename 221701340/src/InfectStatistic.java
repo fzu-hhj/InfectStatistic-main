@@ -1,3 +1,4 @@
+
 import java.io.*;
 
 /**
@@ -387,12 +388,50 @@ class FileIO{
 	}
 }
 public class InfectStatistic {
-
+	/*单元测试*/
+	/*public static String[] Test() {
+		String path = "D:\\software\\Git\\Gitdocument\\TestFile.txt";	
+		String  encoding = "UTF-8";
+		String[] commandStrings = new String[50] ;
+		for(int i = 0;i < 50;i ++) {
+			commandStrings[i] = "0";
+		}
+		int i = 0;
+		File testFile = new File(path);
+		if(testFile.exists()) {
+			try {
+				InputStreamReader read =new InputStreamReader(new FileInputStream(testFile),encoding);
+				BufferedReader br = new BufferedReader(read);
+				String lineTextString = null;
+				while((lineTextString = br.readLine()) != null) {
+					commandStrings[i ++] = lineTextString;
+				}
+				br.close();
+			}catch (FileNotFoundException e) {
+	            e.printStackTrace();
+	        }catch (IOException e) {
+	            e.printStackTrace();
+	        }
+			
+		}
+		return commandStrings;
+	}*/
+	
     public static void main(String[] args) {
-    	Command command = new Command(args);
+    	/*int i = 0;
+    	while(Test()[i] != "0") {
+    			System.out.println(Test()[i] + " ");
+    			args = Test()[i].split("\\s+");
+    			Command command = new Command(args);
+    			FileIO fileIO = new FileIO(command);
+    			fileIO.fileIn();
+    			fileIO.fileOut();
+    			i ++;
+    	}*/
+    	/*Command command = new Command(args);
 		FileIO fileIO = new FileIO(command);
 		fileIO.fileIn();
-		fileIO.fileOut();
+		fileIO.fileOut();*/
 		System.out.println("程序结束！");
     }
 }
