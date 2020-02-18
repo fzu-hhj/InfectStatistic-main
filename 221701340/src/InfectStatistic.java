@@ -5,7 +5,7 @@ import java.io.*;
  * InfectStatistic
  * TODO
  *
- * @author ºúº£½­
+ * @author èƒ¡æµ·æ±Ÿ
  * @version 1.0
  * @since 2020-02-17
  */
@@ -53,7 +53,7 @@ class Date{
 }
 class Command {
 	private Date date = new Date();
-	private int  kinds = 4;//¼ÇÂ¼Êä³öµÄÈËµÄÖÖÊı
+	private int  kinds = 4;//è®°å½•è¾“å‡ºçš„äººçš„ç§æ•°
 	private boolean ip = true;
 	private boolean sp = true;
 	private boolean cure = true;
@@ -65,7 +65,7 @@ class Command {
 	Command(String[] commandStr){
 		
 		if( ! (isCommand(commandStr) && parseCommand(commandStr))) {
-			System.out.println("ÃüÁî¸ñÊ½´íÎó£¡");
+			System.out.println("å‘½ä»¤æ ¼å¼é”™è¯¯ï¼");
 		}	
 	}
 	
@@ -97,7 +97,7 @@ class Command {
 		return kinds;
 	}
 	
-	/*³õ²½ÅĞ¶ÏÃüÁîµÄ¸ñÊ½ÊÇ·ñÕıÈ·*/
+	/*åˆæ­¥åˆ¤æ–­å‘½ä»¤çš„æ ¼å¼æ˜¯å¦æ­£ç¡®*/
 	private boolean isCommand(String[] commandStr) {
 		StringBuffer com = new StringBuffer();
 		for(int i = 0; i < commandStr.length;i ++) {
@@ -110,7 +110,7 @@ class Command {
 		}
 		return true;
 	}
-	/*½âÎö²¢½øÒ»²½¼ìÑé¸ñÊ½*/
+	/*è§£æå¹¶è¿›ä¸€æ­¥æ£€éªŒæ ¼å¼*/
 	private boolean parseCommand(String[] commandStr) {
 		String regex = "-\\w+";
 		String dateFormat = "\\d{4}-\\d{2}-\\d{2}";
@@ -120,28 +120,28 @@ class Command {
 			tempStr = commandStr[i];
 			if(tempStr.matches(regex) && i < commandStr.length-1) {
 				if(tempStr.equals("-date") ) {
-					//¼ìÑéÈÕÆÚµÄ¸ñÊ½ÊÇ·ñºÏ¸ñ
+					//æ£€éªŒæ—¥æœŸçš„æ ¼å¼æ˜¯å¦åˆæ ¼
 					if(!commandStr[i+1].matches(dateFormat)) {
 						return false;
 					}
 					this.date = new Date(commandStr[i+1]);
 				}
 				if(tempStr.equals("-province")) {
-					//¼ìÑéÊ¡·İµÄÊäÈëÊÇ·ñÎªÖĞÎÄ
+					//æ£€éªŒçœä»½çš„è¾“å…¥æ˜¯å¦ä¸ºä¸­æ–‡
 					if(!commandStr[i+1].matches(provinceFormat)) {
 						return false;
 					}
 					this.province = changeInto(commandStr[i+1]);
 				}
 				if(tempStr.equals("-log")) {
-					//¼ìÑéÊäÈëÎÄ¼şÃûÊÇ·ñ´æÔÚ
+					//æ£€éªŒè¾“å…¥æ–‡ä»¶åæ˜¯å¦å­˜åœ¨
 					if(commandStr[i+1].matches(regex)) {
 						return false;
 					}
 					this.logFile = commandStr[i+1];
 				}
 				if(tempStr.equals("-out")) {
-					//¼ìÑéÊä³öÎÄ¼şÃûÊÇ·ñ´æÔÚ
+					//æ£€éªŒè¾“å‡ºæ–‡ä»¶åæ˜¯å¦å­˜åœ¨
 					if(commandStr[i+1].matches(regex)) {
 						return false;
 					}
@@ -181,9 +181,9 @@ class Command {
 		}
 		return true;
 	}
-	/*½«Ê¡·İ×Ö·û´®×ª»¯Îª×Ö·û´®Êı×é*/
+	/*å°†çœä»½å­—ç¬¦ä¸²è½¬åŒ–ä¸ºå­—ç¬¦ä¸²æ•°ç»„*/
 	private String[] changeInto(String provinceStr) {
-		String regex = "£¬";
+		String regex = "ï¼Œ";
 		String[] province =provinceStr.split(regex);
 		return province;
 	}
@@ -191,18 +191,18 @@ class Command {
 }
 
 class FileIO{
-	public static final String[] PROVINCE = {"È«¹ú","°²»Õ","°ÄÃÅ","±±¾©","ÖØÇì","¸£½¨","¸ÊËà","¹ã¶«","¹ãÎ÷×³×å"
-			,"¹óÖİ","º£ÄÏ","ºÓ±±","ºÓÄÏ","ºÚÁú½­","ºş±±","ºşÄÏ","½­Î÷","¼ªÁÖ","½­ËÕ","ÁÉÄş","ÄÚÃÉ¹Å","ÄşÏÄ»Ø×å","Çàº£","É½Î÷","É½¶«","ÉÂÎ÷","ÉÏº£","ËÄ´¨","Ìì½ò","Ì¨Íå","Î÷²Ø"
-			,"ĞÂ½®","Ïã¸Û","ÔÆÄÏ","Õã½­"};
+	public static final String[] PROVINCE = {"å…¨å›½","å®‰å¾½","æ¾³é—¨","åŒ—äº¬","é‡åº†","ç¦å»º","ç”˜è‚ƒ","å¹¿ä¸œ","å¹¿è¥¿å£®æ—"
+			,"è´µå·","æµ·å—","æ²³åŒ—","æ²³å—","é»‘é¾™æ±Ÿ","æ¹–åŒ—","æ¹–å—","æ±Ÿè¥¿","å‰æ—","æ±Ÿè‹","è¾½å®","å†…è’™å¤","å®å¤å›æ—","é’æµ·","å±±è¥¿","å±±ä¸œ","é™•è¥¿","ä¸Šæµ·","å››å·","å¤©æ´¥","å°æ¹¾","è¥¿è—"
+			,"æ–°ç–†","é¦™æ¸¯","äº‘å—","æµ™æ±Ÿ"};
 	private Command command;
-	private int[][] num;//´æ´¢Ö¸¶¨Ê¡µÄÈËÊı
+	private int[][] num;//å­˜å‚¨æŒ‡å®šçœçš„äººæ•°
 	
 	FileIO(Command command){
 		this.command = command;
-		int m = 35;//34¸öÊ¡ºÍÈ«¹ú
-		int n = 4;//4ÖÖÈËÊı
+		int m = 35;//34ä¸ªçœå’Œå…¨å›½
+		int n = 4;//4ç§äººæ•°
 		num = new int[m][n] ;
-		//³õÊ¼»¯ÈËÊı
+		//åˆå§‹åŒ–äººæ•°
 		for(int i = 0;i < m ;i ++) {
 			for(int j = 0;j < n;j ++) {
 				num[i][j] = 0;
@@ -218,52 +218,52 @@ class FileIO{
 				String fileDateStr = file.getName().substring(0, 10);
 				Date fileDate =new Date(fileDateStr);
 				if(fileDate.earlier(command.getDate())) {
-					//System.out.println("ÅĞ¶ÏÈÕÆÚ³É¹¦£¡");
+					//System.out.println("åˆ¤æ–­æ—¥æœŸæˆåŠŸï¼");
 					parseData(file , encoding);
 				}
-				//System.out.println("¶ÁÈëÎÄ¼ş³É¹¦£¡");
+				//System.out.println("è¯»å…¥æ–‡ä»¶æˆåŠŸï¼");
 			}
 		}
 		
 	}
 
-	//¶ÔÃ¿Ò»¸öÎÄ¼şµÄÊı¾İ½øĞĞ¶ÁÈ¡
+	//å¯¹æ¯ä¸€ä¸ªæ–‡ä»¶çš„æ•°æ®è¿›è¡Œè¯»å–
 	private void parseData(File file , String encoding) {
 		InputStreamReader read = null;
 		try {
 			read =new InputStreamReader(new FileInputStream(file), encoding);
 			BufferedReader br = new BufferedReader(read);
 			String text = null;
-			//°´ĞĞ¶ÁÈ¡ÎÄ¼ş
+			//æŒ‰è¡Œè¯»å–æ–‡ä»¶
 			while((text = br.readLine()) != null ) {
 				String[] lineData = text.split("\\s+");
 				if(lineData[0].equals("//")) {
 					break;
 				}
 				int proNum = 0;
-				//Æ¥ÅäÊ¡Ãû
+				//åŒ¹é…çœå
 				for(int i = 0;i < 35;i ++) {
 					if(PROVINCE[i].equals(lineData[0])) {
 						proNum = i ;
 						break;
 					}		
 				}
-				if(text.indexOf("ĞÂÔö") != -1) {
+				if(text.indexOf("æ–°å¢") != -1) {
 					newPatient(lineData , proNum);
 				}
-				if(text.indexOf("Á÷Èë") !=-1){
+				if(text.indexOf("æµå…¥") !=-1){
 					patientFlow(lineData , proNum);
 				}
-				if(text.indexOf("ËÀÍö") != -1) {
+				if(text.indexOf("æ­»äº¡") != -1) {
 					patientDie(lineData , proNum);
 				}
-				if(text.indexOf("ÖÎÓú") != -1) {
+				if(text.indexOf("æ²»æ„ˆ") != -1) {
 					patientCure(lineData , proNum);
 				}
-				if(text.indexOf("È·Õï¸ĞÈ¾") != -1) {
+				if(text.indexOf("ç¡®è¯Šæ„ŸæŸ“") != -1) {
 					confirmIfection(lineData , proNum);
 				}
-				if(text.indexOf("ÅÅ³ı") != -1) {
+				if(text.indexOf("æ’é™¤") != -1) {
 					excludeIfection(lineData , proNum);
 				}
 			}
@@ -277,18 +277,18 @@ class FileIO{
             e.printStackTrace();
         }
 	}
-	//´¦ÀíĞÂÔö¸ĞÈ¾»¼ÕßºÍÒÉËÆ»¼Õß
+	//å¤„ç†æ–°å¢æ„ŸæŸ“æ‚£è€…å’Œç–‘ä¼¼æ‚£è€…
 	private void newPatient(String[] lineData ,int proNum ) {
-		if(lineData[2].equals("¸ĞÈ¾»¼Õß")) {
-			int icrement = Integer.parseInt(lineData[3].substring(0,lineData[3].indexOf("ÈË") ));
+		if(lineData[2].equals("æ„ŸæŸ“æ‚£è€…")) {
+			int icrement = Integer.parseInt(lineData[3].substring(0,lineData[3].indexOf("äºº") ));
 			num[proNum][0] += icrement;
 		}
-		else if(lineData[2].equals("ÒÉËÆ»¼Õß")) {
-			int icrement = Integer.parseInt(lineData[3].substring(0,lineData[3].indexOf("ÈË") ));
+		else if(lineData[2].equals("ç–‘ä¼¼æ‚£è€…")) {
+			int icrement = Integer.parseInt(lineData[3].substring(0,lineData[3].indexOf("äºº") ));
 			num[proNum][1] += icrement;
 		}
 	}
-	//´¦ÀíÁ÷Èë
+	//å¤„ç†æµå…¥
 	private void patientFlow(String[] lineData ,int proNumOut ) {
 		int proNumIn = 0;
 		for(int i = 0;i < 35;i ++) {
@@ -297,43 +297,43 @@ class FileIO{
 				break;
 			}		
 		}
-		if(lineData[1].equals("¸ĞÈ¾»¼Õß")) {
-			int icrement = Integer.parseInt(lineData[4].substring(0,lineData[4].indexOf("ÈË") ));
+		if(lineData[1].equals("æ„ŸæŸ“æ‚£è€…")) {
+			int icrement = Integer.parseInt(lineData[4].substring(0,lineData[4].indexOf("äºº") ));
 			num[proNumOut][0] -= icrement;
 			num[proNumIn][0] += icrement;
 		}
-		if(lineData[1].equals("ÒÉËÆ»¼Õß")) {
-			int icrement = Integer.parseInt(lineData[4].substring(0,lineData[4].indexOf("ÈË") ));
+		if(lineData[1].equals("ç–‘ä¼¼æ‚£è€…")) {
+			int icrement = Integer.parseInt(lineData[4].substring(0,lineData[4].indexOf("äºº") ));
 			num[proNumOut][1] -= icrement;
 			num[proNumIn][1] += icrement;
 		}
 	}
-	//´¦ÀíÖÎÓúµÄÈË
+	//å¤„ç†æ²»æ„ˆçš„äºº
 		private void patientCure(String[] lineData ,int proNum ) {
-			int icrement = Integer.parseInt(lineData[2].substring(0,lineData[2].indexOf("ÈË") ));
+			int icrement = Integer.parseInt(lineData[2].substring(0,lineData[2].indexOf("äºº") ));
 			num[proNum][0] -= icrement;
 			num[proNum][2] += icrement;
 		}
-	//´¦ÀíËÀÍöµÄÈË
+	//å¤„ç†æ­»äº¡çš„äºº
 	private void patientDie(String[] lineData ,int proNum ) {
-		int icrement = Integer.parseInt(lineData[2].substring(0,lineData[2].indexOf("ÈË") ));
+		int icrement = Integer.parseInt(lineData[2].substring(0,lineData[2].indexOf("äºº") ));
 		num[proNum][0] -= icrement;
 		num[proNum][3] += icrement;
 	}
-	//´¦ÀíÈ·ÈÏ¸ĞÈ¾µÄÊı¾İ
+	//å¤„ç†ç¡®è®¤æ„ŸæŸ“çš„æ•°æ®
 	private void confirmIfection(String[] lineData ,int proNum ) {
-		int icrement = Integer.parseInt(lineData[3].substring(0,lineData[3].indexOf("ÈË") ));
+		int icrement = Integer.parseInt(lineData[3].substring(0,lineData[3].indexOf("äºº") ));
 		num[proNum][0] += icrement;
 		num[proNum][1] -= icrement;
 	}
-	//´¦ÀíÅÅ³ı¸ĞÈ¾µÄÊı¾İ
+	//å¤„ç†æ’é™¤æ„ŸæŸ“çš„æ•°æ®
 	private void excludeIfection(String[] lineData ,int proNum ) {
-		int icrement = Integer.parseInt(lineData[3].substring(0,lineData[3].indexOf("ÈË") ));
+		int icrement = Integer.parseInt(lineData[3].substring(0,lineData[3].indexOf("äºº") ));
 		num[proNum][1] -= icrement;
 	}
-	//¼ÆËãÈ«¹úµÄÊı¾İ
+	//è®¡ç®—å…¨å›½çš„æ•°æ®
 	private void nationCount() {
-		//Çå¿ÕÈ«¹úµÄÊı¾İ
+		//æ¸…ç©ºå…¨å›½çš„æ•°æ®
 		for(int i = 0;i < 4;i ++) {
 			num[0][i] = 0;
 		}
@@ -343,7 +343,7 @@ class FileIO{
 			}
 		}
 	}
-	//Êä³öÎÄ¼ş
+	//è¾“å‡ºæ–‡ä»¶
 	public void fileOut() {
 		try {
 			File file = new File(command.getOutFile());
@@ -359,21 +359,21 @@ class FileIO{
 				if(command.getProvince() != null) {
 					for(int k = 0;k < command.getProvince().length;k ++) {
 						if(PROVINCE[i].equals(command.getProvince()[k])) {
-							bufferWriter.write(PROVINCE[i] + " " +"¸ĞÈ¾»¼Õß" + num[i][0] + "ÈË"
-									+ " " + "ÒÉËÆ»¼Õß" + num[i][1] + "ÈË" + " " + "ÖÎÓú" + num[i][2] + "ÈË"
-									+ " " + "ËÀÍö" + num[i][3] + "ÈË" + "\n");
-							System.out.println(PROVINCE[i] + " " +"¸ĞÈ¾»¼Õß" + num[i][0] + "ÈË"
-									+ " " + "ÒÉËÆ»¼Õß" + num[i][1] + "ÈË" + " " + "ÖÎÓú" + num[i][2] + "ÈË"
-									+ " " + "ËÀÍö" + num[i][3] + "ÈË" + "\n");
+							bufferWriter.write(PROVINCE[i] + " " +"æ„ŸæŸ“æ‚£è€…" + num[i][0] + "äºº"
+									+ " " + "ç–‘ä¼¼æ‚£è€…" + num[i][1] + "äºº" + " " + "æ²»æ„ˆ" + num[i][2] + "äºº"
+									+ " " + "æ­»äº¡" + num[i][3] + "äºº" + "\n");
+							System.out.println(PROVINCE[i] + " " +"æ„ŸæŸ“æ‚£è€…" + num[i][0] + "äºº"
+									+ " " + "ç–‘ä¼¼æ‚£è€…" + num[i][1] + "äºº" + " " + "æ²»æ„ˆ" + num[i][2] + "äºº"
+									+ " " + "æ­»äº¡" + num[i][3] + "äºº" + "\n");
 						}
 					}
 				}else {
-					bufferWriter.write(PROVINCE[i] + " " +"¸ĞÈ¾»¼Õß" + num[i][0] + "ÈË"
-							+ " " + "ÒÉËÆ»¼Õß" + num[i][1] + "ÈË" + " " + "ÖÎÓú" + num[i][2] + "ÈË"
-							+ " " + "ËÀÍö" + num[i][3] + "ÈË");
+					bufferWriter.write(PROVINCE[i] + " " +"æ„ŸæŸ“æ‚£è€…" + num[i][0] + "äºº"
+							+ " " + "ç–‘ä¼¼æ‚£è€…" + num[i][1] + "äºº" + " " + "æ²»æ„ˆ" + num[i][2] + "äºº"
+							+ " " + "æ­»äº¡" + num[i][3] + "äºº");
 				}
 			}
-			bufferWriter.write("// ¸ÃÎÄµµ²¢·ÇÕæÊµÊı¾İ£¬½ö¹©²âÊÔÊ¹ÓÃ");
+			bufferWriter.write("// è¯¥æ–‡æ¡£å¹¶éçœŸå®æ•°æ®ï¼Œä»…ä¾›æµ‹è¯•ä½¿ç”¨");
 			bufferWriter.close();
 		}catch(IOException e){
 		      e.printStackTrace();
@@ -388,6 +388,6 @@ public class InfectStatistic {
 		FileIO fileIO = new FileIO(command);
 		fileIO.fileIn();
 		fileIO.fileOut();
-		System.out.println("³ÌĞò½áÊø£¡");
+		System.out.println("ç¨‹åºç»“æŸï¼");
     }
 }
