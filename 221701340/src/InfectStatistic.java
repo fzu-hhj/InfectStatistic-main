@@ -1,4 +1,3 @@
-
 import java.io.*;
 
 /**
@@ -53,7 +52,6 @@ class Date{
 }
 class Command {
 	private Date date = new Date();
-	private int  kinds = 4;//记录输出的人的种数
 	private boolean ip = true;
 	private boolean sp = true;
 	private boolean cure = true;
@@ -92,9 +90,6 @@ class Command {
 	}
 	public String getOutFile() {
 		return outFile;
-	}
-	public int getKinds() {
-		return kinds;
 	}
 	
 	/*初步判断命令的格式是否正确*/
@@ -148,30 +143,26 @@ class Command {
 					this.outFile = commandStr[i+1];
 				}
 				if(tempStr.equals("-type")) {
+					
 					this.ip = false;
 					this.sp = false;
 					this.cure = false;
 					this.dead = false;
-					this.kinds = 0;
-					for(int j = 0; j < 4;j ++) {
+					for(int j = 1; j<commandStr.length - i;j ++) {
 						if(commandStr[i+j].matches(regex)) {
-							return false;
+							break;
 						}
-						else if(commandStr[i+j].equals("ip")) {
+						if(commandStr[i+j].equals("ip")) {
 							this.ip = true;
-							this.kinds ++;
 						}
 						else if(commandStr[i+j].equals("sp")) {
 							this.sp = true;
-							this.kinds ++;
 						}
 						else if(commandStr[i+j].equals("cure")) {
 							this.cure = true;
-							this.kinds ++;
 						}
 						else if(commandStr[i+j].equals("dead")) {
 							this.dead = true;
-							this.kinds ++;
 						}else {
 							return false;
 						}
@@ -359,18 +350,11 @@ class FileIO{
 				if(command.getProvince() != null) {
 					for(int k = 0;k < command.getProvince().length;k ++) {
 						if(PROVINCE[i].equals(command.getProvince()[k])) {
-							bufferWriter.write(PROVINCE[i] + " " +"感染患者" + num[i][0] + "人"
-									+ " " + "疑似患者" + num[i][1] + "人" + " " + "治愈" + num[i][2] + "人"
-									+ " " + "死亡" + num[i][3] + "人" + "\n");
-							System.out.println(PROVINCE[i] + " " +"感染患者" + num[i][0] + "人"
-									+ " " + "疑似患者" + num[i][1] + "人" + " " + "治愈" + num[i][2] + "人"
-									+ " " + "死亡" + num[i][3] + "人" + "\n");
+							output(bufferWriter, i);
 						}
 					}
 				}else {
-					bufferWriter.write(PROVINCE[i] + " " +"感染患者" + num[i][0] + "人"
-							+ " " + "疑似患者" + num[i][1] + "人" + " " + "治愈" + num[i][2] + "人"
-							+ " " + "死亡" + num[i][3] + "人");
+					output(bufferWriter, i);
 				}
 			}
 			bufferWriter.write("// 该文档并非真实数据，仅供测试使用");
@@ -379,6 +363,27 @@ class FileIO{
 		      e.printStackTrace();
 	     }
 		
+	}
+	//判断需要输出的数据
+	private void output(BufferedWriter bufferWriter , int i) {
+		try {
+			bufferWriter.write(PROVINCE[i] + " " );
+			if(command.getIp()) {
+				bufferWriter.write("感染患者" + num[i][0] + "人"+ " ");
+			}
+			if(command.getSp()) {
+				bufferWriter.write("疑似患者" + num[i][1] + "人"+ " ");
+			}
+			if(command.getCure()) {
+				bufferWriter.write("治愈" + num[i][2] + "人"+ " ");
+			}
+			if(command.getDead()) {
+				bufferWriter.write("死亡" + num[i][3] + "人"+ " ");
+			}
+			bufferWriter.write("\n");
+		}catch(IOException e){
+		      e.printStackTrace();
+	     }
 	}
 }
 public class InfectStatistic {
